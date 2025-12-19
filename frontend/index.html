@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flipr Landing Page</title>
+</head>
+
+<body>
+
+<h1>Welcome to Flipr</h1>
+
+<hr>
+
+<!-- OUR PROJECTS -->
+<h2>Our Projects</h2>
+<div id="projects"></div>
+
+<hr>
+
+<!-- HAPPY CLIENTS -->
+<h2>Happy Clients</h2>
+<div id="clients"></div>
+
+<hr>
+
+<!-- CONTACT FORM -->
+<h2>Contact Us</h2>
+
+<input type="text" id="fname" placeholder="Full Name"><br><br>
+<input type="email" id="email" placeholder="Email"><br><br>
+<input type="text" id="mobile" placeholder="Mobile Number"><br><br>
+<input type="text" id="city" placeholder="City"><br><br>
+
+<button type="button" onclick="submitContact()">Submit</button>
+
+<hr>
+
+<!-- NEWSLETTER -->
+<h2>Subscribe to Newsletter</h2>
+
+<input type="email" id="subemail" placeholder="Enter Email"><br><br>
+<button type="button" onclick="subscribe()">Subscribe</button>
+
+<script>
+const BASE_URL = "http://127.0.0.1:5000";
+
+/* -------- FETCH PROJECTS -------- */
+fetch(BASE_URL + "/projects")
+.then(res => res.json())
+.then(data => {
+    const div = document.getElementById("projects");
+    data.forEach(p => {
+        div.innerHTML += `
+            <div>
+                <img src="${p.image}" width="200"><br>
+                <b>${p.name}</b><br>
+                <p>${p.description}</p>
+                <button>Read More</button>
+            </div>
+            <hr>
+        `;
+    });
+});
+
+/* -------- FETCH CLIENTS -------- */
+fetch(BASE_URL + "/clients")
+.then(res => res.json())
+.then(data => {
+    const div = document.getElementById("clients");
+    data.forEach(c => {
+        div.innerHTML += `
+            <div>
+                <img src="${c.image}" width="100"><br>
+                <b>${c.name}</b> (${c.designation})<br>
+                <p>${c.description}</p>
+            </div>
+            <hr>
+        `;
+    });
+});
+
+/* -------- CONTACT FORM -------- */
+function submitContact() {
+    fetch(BASE_URL + "/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name: fname.value,
+            email: email.value,
+            mobile: mobile.value,
+            city: city.value
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message));
+}
+
+/* -------- NEWSLETTER -------- */
+function subscribe() {
+    fetch(BASE_URL + "/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            email: subemail.value
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message));
+}
+</script>
+
+</body>
+</html>

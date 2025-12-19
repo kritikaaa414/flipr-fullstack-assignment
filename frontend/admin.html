@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel - Flipr</title>
+</head>
+
+<body>
+
+<h2>Add Project</h2>
+
+<input type="text" id="pname" placeholder="Project Name"><br><br>
+<input type="text" id="pimage" placeholder="Project Image URL"><br><br>
+<textarea id="pdesc" placeholder="Project Description"></textarea><br><br>
+
+<button type="button" onclick="addProject()">Add Project</button>
+
+<hr>
+
+<h2>Add Client</h2>
+
+<input type="text" id="cname" placeholder="Client Name"><br><br>
+<input type="text" id="cimage" placeholder="Client Image URL"><br><br>
+<input type="text" id="cdesign" placeholder="Client Designation"><br><br>
+<textarea id="cdesc" placeholder="Client Description"></textarea><br><br>
+
+<button type="button" onclick="addClient()">Add Client</button>
+
+<script>
+alert("JS loaded");
+
+const BASE_URL = "http://127.0.0.1:5000";
+
+function addProject() {
+    fetch(BASE_URL + "/add-project", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name: document.getElementById("pname").value,
+            image: document.getElementById("pimage").value,
+            description: document.getElementById("pdesc").value
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message))
+    .catch(err => alert("Project error"));
+}
+
+function addClient() {
+    fetch(BASE_URL + "/add-client", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            name: document.getElementById("cname").value,
+            image: document.getElementById("cimage").value,
+            designation: document.getElementById("cdesign").value,
+            description: document.getElementById("cdesc").value
+        })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.message))
+    .catch(err => alert("Client error"));
+}
+</script>
+
+</body>
+</html>
